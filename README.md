@@ -1,6 +1,6 @@
-# Vector — Pro Gaming Merch Store
+# Vector - Pro Gaming Merch Store
 
-A storefront for a fictional pro esports organization — product catalog, categories (Pro Kit, Apparel, Hardware, Accessories, Bundles, Legacy), cart, and checkout. This repo is the backend API; the frontend below is the design target.
+A storefront for a fictional pro esports organization - product catalog, categories (Pro Kit, Apparel, Hardware, Accessories, Bundles, Legacy), cart, and checkout. This repo is the backend API; the frontend below is the design target.
 
 ![Vector storefront preview](docs/storefront-preview.png)
 
@@ -13,7 +13,7 @@ A storefront for a fictional pro esports organization — product catalog, categ
 - Swagger / OpenAPI (Swashbuckle) with an Authorize flow
 
 **Frontend**
-- Not started yet — will live in a `web/` folder alongside `src/` once work begins.
+- Not started yet - will live in a `web/` folder alongside `src/` once work begins.
 
 ## Project Structure
 
@@ -42,7 +42,7 @@ Early scaffold. `Vector.Domain`, `Vector.Application`, and `Vector.Infrastructur
 - Product detail page
 - Shopping cart (add, remove, update quantity)
 - Checkout flow
-- Real JWT issuance (login/register) — auth middleware is in place, token issuing isn't yet
+- Real JWT issuance (login/register) - auth middleware is in place, token issuing isn't yet
 - Admin: product management (CRUD)
 - Persistence via EF Core (Infrastructure layer)
 - `web/` frontend
