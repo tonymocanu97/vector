@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="src/Vector.API/Vector.API.csproj" />
+  <Project Path="src/Vector.Application/Vector.Application.csproj" />
+  <Project Path="src/Vector.Domain/Vector.Domain.csproj" />
+  <Project Path="src/Vector.Infrastructure/Vector.Infrastructure.csproj" />
+  <Project Path="tests/Vector.UnitTests/Vector.UnitTests.csproj" />
+  <Project Path="tests/Vector.IntegrationTests/Vector.IntegrationTests.csproj" />
+</Solution>

@@ -1,0 +1,6 @@
+@Vector_HostAddress = http://localhost:5035
+
+GET {{Vector_HostAddress}}/api/products/
+Accept: application/json
+
+###
