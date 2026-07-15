@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Barlow_Condensed, Inter } from 'next/font/google';
 
 import './globals.css';
 
-const spaceGrotesk = Space_Grotesk({
-  variable: '--font-space-grotesk',
+const barlowCondensed = Barlow_Condensed({
+  variable: '--font-barlow-condensed',
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 const inter = Inter({
@@ -14,16 +15,18 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Vector',
-  description: 'Vector',
+  title: 'VectorGG',
+  description: 'VectorGG',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className={`${spaceGrotesk.variable} ${inter.variable} font-body antialiased`}>
+      <body className={`${barlowCondensed.variable} ${inter.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

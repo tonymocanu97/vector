@@ -1,42 +1,110 @@
 @import 'tailwindcss';
 
-:root {
-  --background: 0 0% 100%;
-  --foreground: 240 10% 4%;
-  --border: 240 6% 90%;
-  --card: 0 0% 100%;
+@custom-variant dark (&:is(.dark *));
 
-  --surface: 240 5% 96%;
-  --muted: 240 4% 46%;
-  --subtle: 240 5% 65%;
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 
-  --accent: 217 91% 60%;
-  --accent-light: 217 91% 75%;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
 
-  --success: 142 71% 45%;
-  --danger: 0 84% 60%;
+  --font-display: var(--font-barlow-condensed), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  --shadow-glow: 0 20px 80px -20px oklch(0.65 0.22 40 / 0.35);
+  --shadow-card: 0 4px 20px -6px oklch(0 0 0 / 0.5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 240 10% 4%;
-    --foreground: 0 0% 98%;
-    --border: 240 6% 16%;
-    --card: 240 8% 8%;
+:root {
+  --radius: 0.5rem;
 
-    --surface: 240 6% 12%;
-    --muted: 240 5% 65%;
-    --subtle: 240 4% 46%;
+  /* Deep obsidian base with vivid Fnatic orange accent */
+  --background: oklch(0.14 0.005 250);
+  --foreground: oklch(0.98 0 0);
 
-    --accent: 217 91% 60%;
-    --accent-light: 217 91% 75%;
+  --surface: oklch(0.18 0.006 250);
+  --surface-elevated: oklch(0.22 0.007 250);
 
-    --success: 142 71% 45%;
-    --danger: 0 84% 60%;
+  --card: oklch(0.18 0.006 250);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.18 0.006 250);
+  --popover-foreground: oklch(0.98 0 0);
+
+  --primary: oklch(0.7 0.21 42); /* Fnatic orange */
+  --primary-foreground: oklch(0.14 0.005 250);
+
+  --secondary: oklch(0.24 0.007 250);
+  --secondary-foreground: oklch(0.98 0 0);
+
+  --muted: oklch(0.24 0.007 250);
+  --muted-foreground: oklch(0.68 0.01 250);
+
+  --accent: oklch(0.7 0.21 42);
+  --accent-foreground: oklch(0.14 0.005 250);
+
+  --destructive: oklch(0.62 0.24 27);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(0.28 0.007 250);
+  --input: oklch(0.24 0.007 250);
+  --ring: oklch(0.7 0.21 42);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
   }
 }
 
-body {
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
+@utility text-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+
+@utility surface-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
