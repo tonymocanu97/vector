@@ -13,14 +13,14 @@ const SiteSidebar = () => {
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-surface lg:flex">
       {/* Logo */}
-      <div className="flex h-20 items-center gap-3 border-b border-border px-6">
+      <Link href="/" className="flex h-20 items-center gap-3 border-b border-border px-6">
         <div className="font-display grid h-10 w-10 place-items-center rounded-md bg-primary text-xl font-black text-primary-foreground">
           V
         </div>
         <div className="font-display text-xl font-black uppercase tracking-wider">
           Vector<span className="text-primary">GG</span>
         </div>
-      </div>
+      </Link>
 
       {/* Search */}
       <div className="px-4 pt-5">
