@@ -19,7 +19,7 @@ export const categories: CategoryDef[] = [
     icon: Trophy,
     tagline: 'Match-Worn Engineering',
     description:
-      'Official 2026 player jerseys, jackets and training gear — engineered for the arena, cut for the streets.',
+      'Official 2026 player jerseys, jackets and training gear - engineered for the arena, cut for the streets.',
   },
   {
     slug: 'apparel',
@@ -37,7 +37,7 @@ export const categories: CategoryDef[] = [
     icon: Cpu,
     tagline: 'Precision Gear',
     description:
-      'Mousepads, peripherals and pro-tuned accessories — the exact loadout our players use on LAN.',
+      'Mousepads, peripherals and pro-tuned accessories - the exact loadout our players use on LAN.',
   },
   {
     slug: 'accessories',
@@ -46,7 +46,7 @@ export const categories: CategoryDef[] = [
     icon: Backpack,
     tagline: 'Everyday Loadout',
     description:
-      'Backpacks, headwear and small goods to complete the kit — engineered to move with you.',
+      'Backpacks, headwear and small goods to complete the kit - engineered to move with you.',
   },
   {
     slug: 'bundles',
@@ -64,7 +64,7 @@ export const categories: CategoryDef[] = [
     icon: Gift,
     tagline: 'Vault Archive',
     description:
-      'Retro jerseys, championship editions and pieces from our archive — while supplies last.',
+      'Retro jerseys, championship editions and pieces from our archive - while supplies last.',
   },
 ];
 

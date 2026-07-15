@@ -38,7 +38,7 @@ export const teamSections: TeamSection[] = [
       {
         title: 'Rocket League',
         meta: 'RLCS EU',
-        body: 'The most decorated 3-stack in our history — three World finals appearances.',
+        body: 'The most decorated 3-stack in our history - three World finals appearances.',
       },
       {
         title: 'Apex Legends',
@@ -118,7 +118,7 @@ export const teamSections: TeamSection[] = [
       {
         title: 'Ridgeline Apparel',
         meta: 'Fabric',
-        body: 'The mill behind our jerseys and pro kit — moisture-wicking blends spun in Portugal.',
+        body: 'The mill behind our jerseys and pro kit - moisture-wicking blends spun in Portugal.',
       },
       {
         title: 'Frame & Fibre',
