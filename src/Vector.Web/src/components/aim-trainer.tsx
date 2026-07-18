@@ -71,7 +71,7 @@ const AimTrainer = () => {
         onClick={() => setIsOpen(true)}
         className="inline-flex cursor-pointer items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
       >
-        <Crosshair className="h-3.5 w-3.5" />
+        <Crosshair className="h-3.5 w-3.5" color='red' />
         Feeling confident? Test your aim for a discount
       </button>
 
