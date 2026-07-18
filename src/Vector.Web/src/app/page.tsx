@@ -2,6 +2,7 @@ import { ArrowRight, RotateCcw, ShieldCheck, Truck } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import AimTrainer from '@/components/aim-trainer';
 import ProductCard from '@/components/product-card';
 import heroBase from '@/images/hero-base.jpg';
 import heroProkit from '@/images/hero-prokit.jpg';
@@ -13,6 +14,13 @@ const Home = async () => {
 
   return (
     <>
+      {/* Aim trainer banner */}
+      <section className="border-b border-border bg-surface">
+        <div className="mx-auto flex max-w-7xl justify-center px-6 py-3">
+          <AimTrainer />
+        </div>
+      </section>
+
       {/* Category strip */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-8">
