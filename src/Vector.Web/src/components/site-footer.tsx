@@ -1,8 +1,30 @@
 'use client';
 
+import { useState, type FormEvent } from 'react';
 import { FaGithub, FaInstagram, FaTwitch, FaXTwitter, FaYoutube } from 'react-icons/fa6';
 
+import { apiFetch } from '@/lib/api-client';
+
 const SiteFooter = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+    setError(null);
+
+    try {
+      await apiFetch('/newsletter/subscribe', { method: 'POST', body: { email } });
+      setStatus('success');
+      setEmail('');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong.');
+      setStatus('error');
+    }
+  };
+
   return (
     <footer className="border-t border-border bg-surface">
       {/* Newsletter */}
@@ -17,20 +39,25 @@ const SiteFooter = () => {
                 Get first access to drops, pro-kit releases and exclusive member-only gear.
               </p>
             </div>
-            <form onSubmit={e => e.preventDefault()} className="flex flex-col gap-3 sm:flex-row">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
               <input
                 type="email"
                 required
                 placeholder="Your email address"
-                className="h-12 flex-1 rounded-md border border-border bg-background px-4 text-sm outline-none focus:border-primary"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                disabled={status === 'submitting' || status === 'success'}
+                className="h-12 flex-1 rounded-md border border-border bg-background px-4 text-sm outline-none focus:border-primary disabled:opacity-50"
               />
               <button
                 type="submit"
-                className="h-12 rounded-md bg-primary px-6 text-sm font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90"
+                disabled={status === 'submitting' || status === 'success'}
+                className="h-12 cursor-pointer rounded-md bg-primary px-6 text-sm font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Sign Up
+                {status === 'submitting' ? 'Signing Up...' : status === 'success' ? 'Subscribed!' : 'Sign Up'}
               </button>
             </form>
+            {status === 'error' && <p className="mt-2 text-xs text-red-500">{error}</p>}
           </div>
         </div>
       </section>

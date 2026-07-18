@@ -32,6 +32,7 @@ namespace Vector.API
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ICartRepository, CartRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<INewsletterSubscriberRepository, NewsletterSubscriberRepository>();
 
             builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
             builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
@@ -41,6 +42,7 @@ namespace Vector.API
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<INewsletterService, NewsletterService>();
 
             builder.Services.AddProblemDetails();
 

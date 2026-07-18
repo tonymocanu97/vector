@@ -12,6 +12,7 @@ namespace Vector.Infrastructure.Persistence
         public DbSet<CartItem> CartItems => Set<CartItem>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<NewsletterSubscriber> NewsletterSubscribers => Set<NewsletterSubscriber>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
