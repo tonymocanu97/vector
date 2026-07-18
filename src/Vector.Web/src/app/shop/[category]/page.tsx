@@ -2,22 +2,21 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
 import ProductCard from '@/components/product-card';
-import SiteLayout from '@/components/site-layout';
-import { categories, getCategory } from '@/lib/categories';
-import { products } from '@/lib/products';
+import { getCategories, getCategoryBySlug } from '@/lib/categories';
+import { getProducts } from '@/lib/products';
 
 type Props = { params: Promise<{ category: string }> };
 
 const CategoryPage = async ({ params }: Props) => {
   const { category: slug } = await params;
-  const category = getCategory(slug);
+  const [category, categories] = await Promise.all([getCategoryBySlug(slug), getCategories()]);
 
   if (!category) notFound();
 
-  const items = products.filter(p => p.category === category.matches);
+  const items = await getProducts(slug);
 
   return (
-    <SiteLayout>
+    <>
       {/* Category chips */}
       <section>
         <div className="mx-auto flex max-w-7xl flex-wrap gap-2 px-6 py-8 sm:px-10 sm:py-10">
@@ -33,7 +32,7 @@ const CategoryPage = async ({ params }: Props) => {
                     : 'border-border text-muted-foreground hover:border-primary hover:text-primary'
                 }`}
               >
-                {c.label}
+                {c.name}
               </Link>
             );
           })}
@@ -47,7 +46,7 @@ const CategoryPage = async ({ params }: Props) => {
             <div className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
               Dropping soon
             </div>
-            <h2 className="text-display mt-2 text-2xl">The {category.label} vault is loading.</h2>
+            <h2 className="text-display mt-2 text-2xl">The {category.name} vault is loading.</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               We&apos;re finalising this collection. Check back shortly - or browse what&apos;s
               live now.
@@ -71,7 +70,7 @@ const CategoryPage = async ({ params }: Props) => {
           ))}
         </div>
       </section>
-    </SiteLayout>
+    </>
   );
 };
 

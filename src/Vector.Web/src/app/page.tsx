@@ -3,31 +3,35 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import ProductCard from '@/components/product-card';
-import SiteLayout from '@/components/site-layout';
 import heroBase from '@/images/hero-base.jpg';
 import heroProkit from '@/images/hero-prokit.jpg';
-import { categories } from '@/lib/categories';
-import { products } from '@/lib/products';
+import { getCategories, getCategoryIcon } from '@/lib/categories';
+import { getProducts } from '@/lib/products';
 
-const Home = () => {
+const Home = async () => {
+  const [categories, products] = await Promise.all([getCategories(), getProducts()]);
+
   return (
-    <SiteLayout>
+    <>
       {/* Category strip */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-8">
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-            {categories.map(({ label, slug, icon: Icon }) => (
-              <Link
-                key={slug}
-                href={`/shop/${slug}`}
-                className="group flex flex-col items-center gap-2 rounded-lg border border-transparent p-3 text-center transition-colors hover:border-border hover:bg-surface"
-              >
-                <div className="grid h-14 w-14 place-items-center rounded-full border border-border bg-surface transition-colors group-hover:border-primary group-hover:text-primary">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <span className="text-xs font-semibold uppercase tracking-wider">{label}</span>
-              </Link>
-            ))}
+            {categories.map(({ name, slug }) => {
+              const Icon = getCategoryIcon(slug);
+              return (
+                <Link
+                  key={slug}
+                  href={`/shop/${slug}`}
+                  className="group flex flex-col items-center gap-2 rounded-lg border border-transparent p-3 text-center transition-colors hover:border-border hover:bg-surface"
+                >
+                  <div className="grid h-14 w-14 place-items-center rounded-full border border-border bg-surface transition-colors group-hover:border-primary group-hover:text-primary">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <span className="text-xs font-semibold uppercase tracking-wider">{name}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -178,7 +182,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-    </SiteLayout>
+    </>
   );
 };
 

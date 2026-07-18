@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
-import SiteLayout from '@/components/site-layout';
 import { getTeamSection, teamSections } from '@/lib/team';
 
 type Props = { params: Promise<{ section: string }> };
@@ -15,7 +14,7 @@ const TeamSectionPage = async ({ params }: Props) => {
   const Icon = section.icon;
 
   return (
-    <SiteLayout>
+    <>
       {/* Team chips */}
       <section>
         <div className="mx-auto flex max-w-7xl flex-wrap gap-2 px-6 py-8 sm:px-10 sm:py-10">
@@ -80,7 +79,7 @@ const TeamSectionPage = async ({ params }: Props) => {
           ))}
         </div>
       </section>
-    </SiteLayout>
+    </>
   );
 };
 
