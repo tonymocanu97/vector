@@ -1,41 +1,65 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Vector.Application.DTOs;
+using Vector.Application.Services;
 
 namespace Vector.API.Controllers
 {
-    public record Product(int Id, string Name, string Category, decimal Price);
-
     [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    [Route("api/products")]
+    public class ProductsController(IProductService productService) : ControllerBase
     {
-        private static readonly Product[] Products =
-        [
-            new(1, "Pro Kit 2026 Jacket", "Pro Kit", 129.99m),
-            new(2, "Pro Kit 2026 Joggers", "Pro Kit", 89.99m),
-            new(3, "Base Collection Tee", "Apparel", 39.99m),
-            new(4, "Wireless Mouse", "Hardware", 79.99m),
-            new(5, "Team Cap", "Accessories", 24.99m)
-        ];
-
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> GetAll()
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetAll(
+            [FromQuery] string? category,
+            CancellationToken ct)
         {
-            return Ok(Products);
+            var products = string.IsNullOrWhiteSpace(category)
+                ? await productService.GetAllAsync(ct)
+                : await productService.GetByCategorySlugAsync(category, ct);
+
+            return Ok(products);
         }
 
         [HttpGet("{id:int}")]
-        public ActionResult<Product> GetById(int id)
+        public async Task<ActionResult<ProductDto>> GetById(int id, CancellationToken ct)
         {
-            var product = Products.FirstOrDefault(p => p.Id == id);
-            return product is null ? NotFound() : Ok(product);
+            var product = await productService.GetByIdAsync(id, ct);
+            return product is null ? NotFound($"Product with id '{id}' was not found.") : Ok(product);
         }
 
-        [Authorize]
-        [HttpGet("mine")]
-        public ActionResult<IEnumerable<Product>> GetMine()
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<ActionResult<ProductDto>> Create(CreateProductRequest request, CancellationToken ct)
         {
-            return Ok(Products.Where(p => p.Category == "Pro Kit"));
+            var product = await productService.CreateAsync(request, ct);
+            if (product is null)
+            {
+                return BadRequest($"Category with id '{request.CategoryId}' does not exist.");
+            }
+
+            return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<ProductDto>> Update(int id, UpdateProductRequest request, CancellationToken ct)
+        {
+            var (product, error) = await productService.UpdateAsync(id, request, ct);
+            if (error is not null)
+            {
+                return BadRequest(error);
+            }
+
+            return product is null ? NotFound($"Product with id '{id}' was not found.") : Ok(product);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
+        {
+            var deleted = await productService.DeleteAsync(id, ct);
+            return deleted ? NoContent() : NotFound($"Product with id '{id}' was not found.");
         }
     }
 }
