@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/.vs/
+**/node_modules/
+**/.next/
+**/logs/
+.git/
+.github/
+docs/
+tests/
+src/Vector.Web/

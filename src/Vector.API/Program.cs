@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -167,6 +168,14 @@ namespace Vector.API
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Vector API v1");
                 });
             }
+
+            // Railway (and most PaaS hosts) terminate TLS at their edge and forward plain
+            // HTTP to the container - without this, the app never sees the request as
+            // HTTPS and UseHttpsRedirection() below would force a bad redirect loop.
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseHttpsRedirection();
 
