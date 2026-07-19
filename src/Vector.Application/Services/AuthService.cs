@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Vector.Application.DTOs;
 using Vector.Application.Interfaces.Repositories;
 using Vector.Domain.Entities;
@@ -19,7 +20,8 @@ namespace Vector.Application.Services
     public class AuthService(
         IUserRepository userRepository,
         IPasswordHasher passwordHasher,
-        IJwtTokenService jwtTokenService) : IAuthService
+        IJwtTokenService jwtTokenService,
+        ILogger<AuthService> logger) : IAuthService
     {
         public async Task<(AuthResponse? Response, string? Error)> RegisterAsync(
             RegisterRequest request,
@@ -29,6 +31,7 @@ namespace Vector.Application.Services
 
             if (await userRepository.ExistsByEmailAsync(normalizedEmail, ct))
             {
+                logger.LogWarning("Registration attempt with already-registered email {Email}.", normalizedEmail);
                 return (null, $"An account with email '{normalizedEmail}' already exists.");
             }
 
@@ -44,6 +47,8 @@ namespace Vector.Application.Services
             await userRepository.AddAsync(user, ct);
             await userRepository.SaveChangesAsync(ct);
 
+            logger.LogInformation("User {Email} registered successfully (UserId {UserId}).", normalizedEmail, user.Id);
+
             return (BuildAuthResponse(user), null);
         }
 
@@ -54,8 +59,11 @@ namespace Vector.Application.Services
 
             if (user is null || !passwordHasher.Verify(request.Password, user.PasswordHash))
             {
+                logger.LogWarning("Failed login attempt for {Email}.", normalizedEmail);
                 return null;
             }
+
+            logger.LogInformation("User {Email} logged in successfully (UserId {UserId}).", normalizedEmail, user.Id);
 
             return BuildAuthResponse(user);
         }

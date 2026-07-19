@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using NLog;
+using NLog.Web;
 using Vector.Application.Interfaces.Repositories;
 using Vector.Application.Services;
 using Vector.Infrastructure.Persistence;
@@ -17,7 +19,32 @@ namespace Vector.API
     {
         public static void Main(string[] args)
         {
+            // NLog bootstraps here directly (the one place in this codebase that talks to NLog's
+            // own API, rather than the ILogger<T> abstraction) so startup failures - which happen
+            // before DI is even built - still get logged instead of disappearing silently.
+            var nlogLogger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+
+            try
+            {
+                RunApp(args);
+            }
+            catch (Exception ex)
+            {
+                nlogLogger.Error(ex, "Vector.API stopped unexpectedly during startup");
+                throw;
+            }
+            finally
+            {
+                LogManager.Shutdown();
+            }
+        }
+
+        private static void RunApp(string[] args)
+        {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Logging.ClearProviders();
+            builder.Host.UseNLog();
 
             // Add services to the container.
             builder.Services.AddControllers();

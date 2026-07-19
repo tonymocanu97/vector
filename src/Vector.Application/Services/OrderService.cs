@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Vector.Application.DTOs;
 using Vector.Application.Interfaces.Repositories;
 using Vector.Domain.Entities;
@@ -5,7 +6,10 @@ using Vector.Domain.Enums;
 
 namespace Vector.Application.Services
 {
-    public class OrderService(IOrderRepository orderRepository, ICartRepository cartRepository) : IOrderService
+    public class OrderService(
+        IOrderRepository orderRepository,
+        ICartRepository cartRepository,
+        ILogger<OrderService> logger) : IOrderService
     {
         // No real payment gateway is wired up (out of scope for this project) - checkout
         // validates stock, snapshots the order, and marks it Paid immediately to simulate
@@ -19,6 +23,7 @@ namespace Vector.Application.Services
 
             if (cart is null || cart.Items.Count == 0)
             {
+                logger.LogWarning("Checkout attempted with an empty cart (UserId {UserId}).", userId);
                 return (null, "Your cart is empty.");
             }
 
@@ -26,6 +31,13 @@ namespace Vector.Application.Services
             {
                 if (item.Quantity > item.Product.StockQuantity)
                 {
+                    logger.LogWarning(
+                        "Checkout blocked for UserId {UserId}: requested {Requested} of product {ProductId} ('{ProductName}') but only {Available} in stock.",
+                        userId,
+                        item.Quantity,
+                        item.ProductId,
+                        item.Product.Name,
+                        item.Product.StockQuantity);
                     return (null, $"Only {item.Product.StockQuantity} unit(s) of '{item.Product.Name}' are available.");
                 }
             }
@@ -60,6 +72,12 @@ namespace Vector.Application.Services
             // Product/Cart repos share the same scoped DbContext, so this one call
             // commits the stock decrement and cart clear together with the new order.
             await orderRepository.SaveChangesAsync(ct);
+
+            logger.LogInformation(
+                "Order {OrderId} placed for UserId {UserId}, total {Total:C}.",
+                order.Id,
+                userId,
+                order.TotalAmount);
 
             return (ToDto(order), null);
         }

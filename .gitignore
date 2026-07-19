@@ -19,3 +19,4 @@ obj/
 
 # Logs
 *.log
+logs/

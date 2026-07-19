@@ -1,10 +1,14 @@
+using Microsoft.Extensions.Logging;
 using Vector.Application.DTOs;
 using Vector.Application.Interfaces.Repositories;
 using Vector.Domain.Entities;
 
 namespace Vector.Application.Services
 {
-    public class CartService(ICartRepository cartRepository, IProductRepository productRepository) : ICartService
+    public class CartService(
+        ICartRepository cartRepository,
+        IProductRepository productRepository,
+        ILogger<CartService> logger) : ICartService
     {
         public async Task<CartDto> GetCartAsync(int userId, CancellationToken ct = default)
         {
@@ -30,6 +34,12 @@ namespace Vector.Application.Services
             var stockError = CheckStock(product, requestedQuantity);
             if (stockError is not null)
             {
+                logger.LogWarning(
+                    "Add-to-cart blocked for UserId {UserId}: requested {Requested} of product {ProductId}, only {Available} in stock.",
+                    userId,
+                    requestedQuantity,
+                    product.Id,
+                    product.StockQuantity);
                 return (null, stockError);
             }
 
@@ -63,6 +73,12 @@ namespace Vector.Application.Services
             var stockError = CheckStock(item.Product, request.Quantity);
             if (stockError is not null)
             {
+                logger.LogWarning(
+                    "Cart update blocked for UserId {UserId}: requested {Requested} of product {ProductId}, only {Available} in stock.",
+                    userId,
+                    request.Quantity,
+                    productId,
+                    item.Product.StockQuantity);
                 return (null, stockError);
             }
 
