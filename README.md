@@ -1,6 +1,6 @@
-# Vector — Pro Esports Merch Store
+# Vector - Pro Esports Merch Store
 
-A full-stack e-commerce storefront for a fictional pro esports organization: product catalog across six categories (Pro Kit, Apparel, Hardware, Accessories, Bundles, Legacy), authentication, cart, checkout, order history, and a newsletter signup — built end-to-end (API, frontend, tests, CI/CD, deployment) as a portfolio project.
+A full-stack e-commerce storefront for a fictional pro esports organization: product catalog across six categories (Pro Kit, Apparel, Hardware, Accessories, Bundles, Legacy), authentication, cart, checkout, order history, and a newsletter signup - built end-to-end (API, frontend, tests, CI/CD, deployment) as a portfolio project.
 
 [![Backend CI](https://github.com/tonymocanu97/vector/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/tonymocanu97/vector/actions/workflows/backend-ci.yml)
 [![Frontend CI](https://github.com/tonymocanu97/vector/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/tonymocanu97/vector/actions/workflows/frontend-ci.yml)
@@ -28,7 +28,7 @@ API: https://vector-api-production.up.railway.app (Swagger disabled in productio
 **Testing**
 - xUnit, Moq, FluentAssertions
 - Unit tests over the Application layer's service logic (mocked repositories)
-- Integration tests over the full HTTP pipeline via `WebApplicationFactory`, backed by a real disposable Postgres container (Testcontainers) — not an in-memory/fake provider
+- Integration tests over the full HTTP pipeline via `WebApplicationFactory`, backed by a real disposable Postgres container (Testcontainers) - not an in-memory/fake provider
 
 **DevOps**
 - Docker (multi-stage build for the API)
@@ -37,12 +37,12 @@ API: https://vector-api-production.up.railway.app (Swagger disabled in productio
 
 ## Architecture
 
-Plain layered Clean Architecture — no CQRS/MediatR, no ASP.NET Core Identity — chosen deliberately to keep the codebase readable over abstracted for its own sake:
+Plain layered Clean Architecture - no CQRS/MediatR, no ASP.NET Core Identity - chosen deliberately to keep the codebase readable over abstracted for its own sake:
 
-- **Vector.Domain** — entities and enums, zero dependencies
-- **Vector.Application** — DTOs, repository interfaces, and plain service classes containing all business logic (`AuthService`, `ProductService`, `CartService`, `OrderService`, `CategoryService`, `NewsletterService`)
-- **Vector.Infrastructure** — EF Core `DbContext`, repository implementations, JWT/BCrypt implementations
-- **Vector.API** — controllers and the composition root (`Program.cs`)
+- **Vector.Domain** - entities and enums, zero dependencies
+- **Vector.Application** - DTOs, repository interfaces, and plain service classes containing all business logic (`AuthService`, `ProductService`, `CartService`, `OrderService`, `CategoryService`, `NewsletterService`)
+- **Vector.Infrastructure** - EF Core `DbContext`, repository implementations, JWT/BCrypt implementations
+- **Vector.API** - controllers and the composition root (`Program.cs`)
 
 Services return `(T? Value, string? Error)` tuples instead of throwing on expected failure cases (duplicate email, insufficient stock, not found), which controllers map to the appropriate HTTP status code. Unexpected exceptions are caught by a single global handler and returned as a generic `ProblemDetails` response.
 
@@ -86,7 +86,7 @@ Vector/
 
 ### Backend
 
-Add your local database and JWT settings — either via `dotnet user-secrets` or `src/Vector.API/appsettings.Development.json`:
+Add your local database and JWT settings - either via `dotnet user-secrets` or `src/Vector.API/appsettings.Development.json`:
 
 ```json
 {
@@ -137,6 +137,6 @@ dotnet test Vector.slnx
 ## CI/CD
 
 - **CI** (GitHub Actions, path-filtered so each pipeline only runs when its own code changes):
-  - `backend-ci.yml` — restore, build, test (`dotnet test`, including the Testcontainers-backed integration suite — GitHub's `ubuntu-latest` runners have Docker preinstalled)
-  - `frontend-ci.yml` — install, lint, type-check, build
+  - `backend-ci.yml` - restore, build, test (`dotnet test`, including the Testcontainers-backed integration suite - GitHub's `ubuntu-latest` runners have Docker preinstalled)
+  - `frontend-ci.yml` - install, lint, type-check, build
 - **CD**: Vector.API is deployed to Railway (Docker-based build) alongside its Postgres database; Vector.Web is deployed to Vercel. Both are connected to this repository for auto-deploy on push to `main`.
