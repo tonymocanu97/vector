@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 
-import { apiFetch } from '@/lib/api-client';
+import { ApiError, apiFetch } from '@/lib/api-client';
 import { useAuth } from '@/lib/auth/auth-context';
 
 export type CartItem = {
@@ -33,7 +33,7 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const [cart, setCart] = useState<Cart | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,10 +46,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     try {
       setCart(await apiFetch<Cart>('/cart', { token }));
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) {
+        logout();
+        return;
+      }
+      throw error;
     } finally {
       setIsLoading(false);
     }
-  }, [token]);
+  }, [token, logout]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect

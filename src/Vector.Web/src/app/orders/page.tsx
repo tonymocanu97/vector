@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 
-import { apiFetch } from '@/lib/api-client';
+import { ApiError, apiFetch } from '@/lib/api-client';
 import { useAuth } from '@/lib/auth/auth-context';
 
 type OrderItem = {
@@ -23,7 +23,7 @@ type Order = {
 };
 
 const OrdersContent = () => {
-  const { token, user, isLoading: authLoading } = useAuth();
+  const { token, user, isLoading: authLoading, logout } = useAuth();
   const searchParams = useSearchParams();
   const placedId = searchParams.get('placed');
   const [orders, setOrders] = useState<Order[]>([]);
@@ -37,8 +37,16 @@ const OrdersContent = () => {
     }
     apiFetch<Order[]>('/orders', { token })
       .then(setOrders)
+      .catch(error => {
+        if (error instanceof ApiError && error.status === 401) {
+          logout();
+          return;
+        }
+        throw error;
+      })
       .finally(() => setIsLoading(false));
     /* eslint-enable react-hooks/set-state-in-effect */
+  }, [token, logout]);
 
   if (!authLoading && !user) {
     return (
