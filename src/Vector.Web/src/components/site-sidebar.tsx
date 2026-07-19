@@ -6,8 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useAuth } from '@/lib/auth/auth-context';
-import { getCategories, getCategoryIcon, type Category } from '@/lib/categories';
 import { useCart } from '@/lib/cart/cart-context';
+import { getCategories, getCategoryIcon, type Category } from '@/lib/categories';
 import { teamSections } from '@/lib/team';
 
 const SiteSidebar = () => {

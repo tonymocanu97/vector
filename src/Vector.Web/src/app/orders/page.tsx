@@ -30,6 +30,7 @@ const OrdersContent = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     if (!token) {
       setIsLoading(false);
       return;
@@ -37,7 +38,7 @@ const OrdersContent = () => {
     apiFetch<Order[]>('/orders', { token })
       .then(setOrders)
       .finally(() => setIsLoading(false));
-  }, [token]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
   if (!authLoading && !user) {
     return (

@@ -17,12 +17,14 @@ const AimTrainer = () => {
   const [target, setTarget] = useState({ x: 50, y: 50 });
   const [copied, setCopied] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const scoreRef = useRef(0);
 
   const randomizeTarget = useCallback(() => {
     setTarget({ x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 });
   }, []);
 
   const startGame = () => {
+    scoreRef.current = 0;
     setScore(0);
     setTimeLeft(GAME_DURATION_SECONDS);
     setCopied(false);
@@ -34,7 +36,14 @@ const AimTrainer = () => {
     if (gameState !== 'playing') return;
 
     intervalRef.current = setInterval(() => {
-      setTimeLeft(prev => (prev <= 1 ? 0 : prev - 1));
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          setGameState(scoreRef.current >= HITS_TO_WIN ? 'won' : 'lost');
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
     return () => {
@@ -42,13 +51,8 @@ const AimTrainer = () => {
     };
   }, [gameState]);
 
-  useEffect(() => {
-    if (gameState === 'playing' && timeLeft === 0) {
-      setGameState(score >= HITS_TO_WIN ? 'won' : 'lost');
-    }
-  }, [timeLeft, gameState, score]);
-
   const handleHit = () => {
+    scoreRef.current += 1;
     setScore(s => s + 1);
     randomizeTarget();
   };

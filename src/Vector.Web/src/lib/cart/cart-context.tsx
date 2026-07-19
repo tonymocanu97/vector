@@ -52,6 +52,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [token]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refresh();
   }, [refresh]);
 

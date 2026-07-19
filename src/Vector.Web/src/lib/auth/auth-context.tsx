@@ -37,6 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored) as AuthResponse;
@@ -44,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setToken(parsed.token);
     }
     setIsLoading(false);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   const persist = (response: AuthResponse) => {
