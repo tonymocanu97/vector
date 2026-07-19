@@ -1,6 +1,6 @@
 # Vector - Pro Esports Merch Store
 
-A full-stack e-commerce storefront for a fictional pro esports organization: product catalog across six categories (Pro Kit, Apparel, Hardware, Accessories, Bundles, Legacy), authentication, cart, checkout, order history, and a newsletter signup - built end-to-end (API, frontend, tests, CI/CD, deployment) as a portfolio project.
+A full-stack e-commerce storefront for a fictional pro esports organization: product catalog across six categories (Pro Kit, Apparel, Hardware, Accessories, Bundles, Legacy), authentication, cart, checkout, order history, and a newsletter signup.
 
 [![Backend CI](https://github.com/tonymocanu97/vector/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/tonymocanu97/vector/actions/workflows/backend-ci.yml)
 [![Frontend CI](https://github.com/tonymocanu97/vector/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/tonymocanu97/vector/actions/workflows/frontend-ci.yml)
@@ -8,8 +8,6 @@ A full-stack e-commerce storefront for a fictional pro esports organization: pro
 **Live:** https://vector-web-ruby.vercel.app/
 
 ![Vector storefront preview](docs/storefront-preview.png)
-
-API: https://vector-api-production.up.railway.app (Swagger disabled in production; see [Getting Started](#getting-started) to run it locally with Swagger UI)
 
 ## Tech Stack
 
@@ -44,8 +42,6 @@ Plain layered Clean Architecture - no CQRS/MediatR, no ASP.NET Core Identity - c
 - **Vector.Infrastructure** - EF Core `DbContext`, repository implementations, JWT/BCrypt implementations
 - **Vector.API** - controllers and the composition root (`Program.cs`)
 
-Services return `(T? Value, string? Error)` tuples instead of throwing on expected failure cases (duplicate email, insufficient stock, not found), which controllers map to the appropriate HTTP status code. Unexpected exceptions are caught by a single global handler and returned as a generic `ProblemDetails` response.
-
 ## Features
 
 - Register / login with JWT issuance, BCrypt-hashed passwords
@@ -54,7 +50,7 @@ Services return `(T? Value, string? Error)` tuples instead of throwing on expect
 - Checkout: stock re-validation, order snapshot (price/name at time of purchase), stock decrement, order history
 - Admin-only product CRUD, role-gated via JWT claims
 - Newsletter signup
-- A small aim-trainer mini-game on the home page (the "cireașă de pe tort")
+- A small aim-trainer mini-game on the home page
 
 ## Project Structure
 
