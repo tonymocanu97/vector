@@ -24,6 +24,7 @@ Full-stack e-commerce storefront for a fictional pro esports organization. Produ
 - Checkout with order history
 - Admin product CRUD (role-gated)
 - Newsletter signup
+- Scripted FAQ chat widget (client-side keyword matching, no AI/backend calls)
 
 ## Project Structure
 

@@ -1,3 +1,4 @@
+import ChatWidget from '@/components/chatbot/chat-widget';
 import SiteFooter from '@/components/site-footer';
 import SiteSidebar from '@/components/site-sidebar';
 
@@ -9,6 +10,7 @@ const SiteLayout = ({ children }: { children: React.ReactNode }) => {
         <main className="flex-1">{children}</main>
         <SiteFooter />
       </div>
+      <ChatWidget />
     </div>
   );
 };
