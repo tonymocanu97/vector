@@ -1,4 +1,4 @@
-# Vector - Pro Esports Merch Store
+# Vector
 
 Full-stack e-commerce storefront for a fictional pro esports organization. Product catalog, authentication, cart, checkout, and order history.
 
